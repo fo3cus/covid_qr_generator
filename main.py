@@ -64,12 +64,22 @@ img = qr.make_image(fill_color="black", back_color="white")
 
 # * Resize img, load bg, calc position, merge
 img = img.resize((450, 450))
-bg = Image.open("background.png")
+bg = Image.open("assets/background.png")
 
 qr_pos = ((bg.size[0] - img.size[0]) // 2, (bg.size[1] - img.size[1]) // 2 - 126)
 
 bg.paste(img, qr_pos)
 
+
+# * Add text to image
+title_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 24)
+address_font = ImageFont.truetype("assets/Roboto-Regular.ttf", 18)
+
+title_text = opn.strip()
+address_text = adr.replace("\n", ", ")
+
+print(title_text)
+print(address_text)
 
 # * Save final image
 title = opn.replace(" ", "_").lower()
