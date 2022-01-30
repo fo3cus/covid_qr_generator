@@ -1,12 +1,12 @@
 import base64
 import json
-import tkinter
-from turtle import bgcolor
 import qrcode
 import qrcode.image.svg
 from PIL import Image, ImageFont, ImageDraw
-from tkinter import Tk, font, ttk, StringVar, Entry, Button, Frame
-from tkinter.filedialog import asksaveasfile
+from tkinter import Tk, font, ttk, StringVar, Frame
+
+# TODO: Add warning about title: modal popup or label?
+
 
 # * Static data
 SAMPLE_DICT = {
@@ -24,12 +24,31 @@ COV_PREFIX = "NZCOVIDTRACER:"
 
 def build_sign():
     # * Get input
-    # if not txt_title.get():
-    #     txt_warning.set("Please enter a title!")
-    #     return
-    # txt_warning.set("")
     opn = txt_title_body.get()
-    adr = txt_address_body.get() + "\n" + txt_suburb_body.get() + "\n" + txt_city_body.get()
+
+    if not opn:
+        lbl_warning_text.set("YOU MUST ENTER A TITLE")
+        return
+    else:
+        lbl_warning_text.set("")
+
+    entries = [txt_address_body.get(), txt_suburb_body.get(), txt_city_body.get()]
+
+    adr = ""
+
+    prev = False  # Flag to check for previous entry, thus needs \n
+
+    for index, entry in enumerate(entries):
+        if entry:
+            if index == 0:
+                adr += entry
+                prev = True
+            else:
+                if prev:  # Previous entry exists
+                    adr += "\n" + entry
+                else:
+                    adr += entry
+                    prev = True
 
     # * Construct dictionary from input
     custom_dict = {
@@ -101,11 +120,6 @@ def build_sign():
     bg.save(f"{title}.png")
 
 
-# * Close all windows
-def quit_all(*args):
-    root.destroy()
-
-
 # ==================[ TKINTER SECTION ]================== #
 
 # * Create main display
@@ -115,15 +129,15 @@ root.configure(background="#F4F4F4")
 window_width = 500
 window_height = 705
 
-# get the screen dimension
+# Get the screen dimension
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
-# find the center point
+# Find the center point
 center_x = int(screen_width / 2 - window_width / 2)
 center_y = int(screen_height / 2 - window_height / 2)
 
-# set the position of the window to the center of the screen
+# Set the position of the window to the center of the screen
 root.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
 
 root.resizable(False, False)
@@ -131,11 +145,11 @@ root.title("NZ COVID QR Sign Generator")
 root.grid_rowconfigure(6, weight=1)
 root.grid_columnconfigure(0, weight=1)
 
+
 # * Set up form display
 font_title = font.Font(family="Helvetica", size=20, weight="bold")
 font_request = font.Font(family="Helvetica", size=16, weight="bold")
 font_input = font.Font(family="Helvetica", size=18, weight="normal")
-font_warning = font.Font(family="Helvetica", size=18, weight="bold")
 font_label = font.Font(family="Helvetica", size=16, weight="bold")
 font_sub_label = font.Font(family="Helvetica", size=10, weight="normal")
 
@@ -188,7 +202,7 @@ frm_banner.columnconfigure(0, weight=1)
 frm_request.columnconfigure(0, weight=1)
 frm_title_outer.columnconfigure(0, weight=1)
 frm_title_inner.columnconfigure(1, weight=1)
-frm_title_body.columnconfigure(1, weight=1)
+frm_title_body.columnconfigure(2, weight=1)
 frm_address_outer.columnconfigure(0, weight=1)
 frm_address_inner.columnconfigure(1, weight=1)
 frm_address_body.columnconfigure(1, weight=1)
@@ -216,9 +230,12 @@ lbl_title_body = ttk.Label(frm_title_body, text="Title", font=font_label, backgr
 lbl_title_body.grid(column=0, row=0, sticky="w")
 lbl_required = ttk.Label(frm_title_body, text="(required)", font=font_sub_label, background="white", foreground="red")
 lbl_required.grid(column=1, row=0, sticky="w")
+lbl_warning_text = StringVar()
+lbl_warning = ttk.Label(frm_title_body, text="", font=font_sub_label, background="white", foreground="red", textvariable=lbl_warning_text)
+lbl_warning.grid(column=2, row=0)
 txt_title_body = StringVar()
 ent_title_body = ttk.Entry(frm_title_body, textvariable=txt_title_body, font=font_input, width=30)
-ent_title_body.grid(column=0, columnspan=2, row=1, ipady=5, sticky="w")
+ent_title_body.grid(column=0, columnspan=3, row=1, ipady=5, sticky="w")
 ent_title_body.focus()
 
 # Address entry
@@ -258,14 +275,6 @@ btn_save = ttk.Button(frm_save, text="Save", command=build_sign, padding=15)
 btn_save.grid(column=0, columnspan=2, row=5)
 
 
-# * Warning message
-# txt_warning = StringVar()
-# txtbox_warning = Entry(root, textvariable=txt_warning)
-# lbl_warning = ttk.Label(root, text="", font=font_label, foreground="red", background="white", textvariable=txt_warning)
-# lbl_warning.grid(column=0, row=6, columnspan=2, padx=5, pady=10)
-
-
 if __name__ == "__main__":
     # * Start main loop
     root.mainloop()
-    # build_sign()
