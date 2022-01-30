@@ -1,10 +1,11 @@
 import base64
 import json
 import tkinter
+from turtle import bgcolor
 import qrcode
 import qrcode.image.svg
 from PIL import Image, ImageFont, ImageDraw
-from tkinter import Tk, font, ttk, StringVar, Entry
+from tkinter import Tk, font, ttk, StringVar, Entry, Button, Frame
 from tkinter.filedialog import asksaveasfile
 
 # * Static data
@@ -23,9 +24,12 @@ COV_PREFIX = "NZCOVIDTRACER:"
 
 def build_sign():
     # * Get input
-    # Sample input data
-    opn = "Custom Test Locale"
-    adr = "123 Test Street\nTest Suburb\nCity"
+    # if not txt_title.get():
+    #     txt_warning.set("Please enter a title!")
+    #     return
+    # txt_warning.set("")
+    opn = txt_title_body.get()
+    adr = txt_address_body.get() + "\n" + txt_suburb_body.get() + "\n" + txt_city_body.get()
 
     # * Construct dictionary from input
     custom_dict = {
@@ -106,10 +110,10 @@ def quit_all(*args):
 
 # * Create main display
 root = Tk()
-root.configure(background="white")
+root.configure(background="#F4F4F4")
 
 window_width = 500
-window_height = 500
+window_height = 705
 
 # get the screen dimension
 screen_width = root.winfo_screenwidth()
@@ -124,68 +128,144 @@ root.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
 
 root.resizable(False, False)
 root.title("NZ COVID QR Sign Generator")
-
+root.grid_rowconfigure(6, weight=1)
+root.grid_columnconfigure(0, weight=1)
 
 # * Set up form display
 font_title = font.Font(family="Helvetica", size=20, weight="bold")
+font_request = font.Font(family="Helvetica", size=16, weight="bold")
 font_input = font.Font(family="Helvetica", size=18, weight="normal")
-font_label = font.Font(family="Helvetica", size=16, weight="normal")
+font_warning = font.Font(family="Helvetica", size=18, weight="bold")
+font_label = font.Font(family="Helvetica", size=16, weight="bold")
+font_sub_label = font.Font(family="Helvetica", size=10, weight="normal")
 
-txt_title = StringVar()
-txtbox_title = Entry(root, textvariable=txt_title)
 
-txt_address = StringVar()
-txtbox_address = Entry(root, textvariable=txt_address)
+# * Frames
+# Create
+frm_banner = Frame(root, bg="#FFCC00")
+frm_request = Frame(root, bg="#F4F4F4")
+frm_title_outer = Frame(root, bg="#F4F4F4", padx=15, pady=10)
+frm_title_inner = Frame(frm_title_outer, bg="white")
+frm_title_stripe = Frame(frm_title_inner, bg="#FFCC00", padx=5)
+frm_title_body = Frame(frm_title_inner, bg="white", padx=15, pady=15)
+frm_address_outer = Frame(root, bg="#F4F4F4", padx=15, pady=10)
+frm_address_inner = Frame(frm_address_outer, bg="white")
+frm_address_stripe = Frame(frm_address_inner, bg="#FFCC00", padx=5)
+frm_address_body = Frame(frm_address_inner, bg="white", padx=15, pady=15)
+frm_suburb_outer = Frame(root, bg="#F4F4F4", padx=15, pady=10)
+frm_suburb_inner = Frame(frm_suburb_outer, bg="white")
+frm_suburb_stripe = Frame(frm_suburb_inner, bg="#FFCC00", padx=5)
+frm_suburb_body = Frame(frm_suburb_inner, bg="white", padx=15, pady=15)
+frm_city_outer = Frame(root, bg="#F4F4F4", padx=15, pady=10)
+frm_city_inner = Frame(frm_city_outer, bg="white")
+frm_city_stripe = Frame(frm_city_inner, bg="#FFCC00", padx=5)
+frm_city_body = Frame(frm_city_inner, bg="white", padx=15, pady=15)
+frm_save = Frame(root, bg="#F4F4F4", padx=15, pady=5)
 
-txt_suburb = StringVar()
-txtbox_suburb = Entry(root, textvariable=txt_suburb)
+# Layout
+frm_banner.grid(column=0, sticky="we")
+frm_request.grid(column=0, sticky="we")
+frm_title_outer.grid(column=0, sticky="we")
+frm_title_inner.grid(column=0, sticky="we")
+frm_title_stripe.grid(column=0, row=0, sticky="nesw")
+frm_title_body.grid(column=1, row=0, sticky="nesw")
+frm_address_outer.grid(column=0, sticky="we")
+frm_address_inner.grid(column=0, sticky="we")
+frm_address_stripe.grid(column=0, sticky="nesw")
+frm_address_body.grid(column=1, row=0, sticky="nesw")
+frm_suburb_outer.grid(column=0, sticky="we")
+frm_suburb_inner.grid(column=0, sticky="we")
+frm_suburb_stripe.grid(column=0, sticky="nesw")
+frm_suburb_body.grid(column=1, row=0, sticky="nesw")
+frm_city_outer.grid(column=0, sticky="we")
+frm_city_inner.grid(column=0, sticky="we")
+frm_city_stripe.grid(column=0, sticky="nesw")
+frm_city_body.grid(column=1, row=0, sticky="nesw")
+frm_save.grid(column=0, sticky="we")
 
-txt_city = StringVar()
-txtbox_city = Entry(root, textvariable=txt_city)
+# Column config
+frm_banner.columnconfigure(0, weight=1)
+frm_request.columnconfigure(0, weight=1)
+frm_title_outer.columnconfigure(0, weight=1)
+frm_title_inner.columnconfigure(1, weight=1)
+frm_title_body.columnconfigure(1, weight=1)
+frm_address_outer.columnconfigure(0, weight=1)
+frm_address_inner.columnconfigure(1, weight=1)
+frm_address_body.columnconfigure(1, weight=1)
+frm_suburb_outer.columnconfigure(0, weight=1)
+frm_suburb_inner.columnconfigure(1, weight=1)
+frm_suburb_body.columnconfigure(1, weight=1)
+frm_city_outer.columnconfigure(0, weight=1)
+frm_city_inner.columnconfigure(1, weight=1)
+frm_city_body.columnconfigure(1, weight=1)
+frm_save.columnconfigure(0, weight=1)
 
 # * Text input
 # Banner
-lbl_banner = ttk.Label(root, text="Enter Title and Address", font=font_title, foreground="black", background="white")
-lbl_banner.grid(column=0, row=0, columnspan=2, padx=5, pady=10)
+lbl_banner = ttk.Label(frm_banner, text="NZ COVID QR Sign Generator", font=font_title, background="#FFCC00")
+lbl_banner.grid(column=0, pady=20)
+
+# Request
+lbl_request = ttk.Label(frm_request, text="Please enter a title and address", font=font_request, foreground="#545454", background="#F4F4F4")
+lbl_request.grid(column=0, row=0, padx=0, pady=20)
 
 # Title entry
-lbl_title = ttk.Label(root, text="Title", font=font_label, foreground="black", background="white")
-lbl_title.grid(column=0, row=1, padx=5, pady=10, sticky=tkinter.E)
-
-ent_title = ttk.Entry(root, textvariable=txt_title, font=font_input, width=25)
-ent_title.grid(column=1, row=1, padx=5, pady=10, ipady=5)
-ent_title.focus()
+lbl_title_stripe = ttk.Label(frm_title_stripe, text="", font=font_label, background="#FFCC00")
+lbl_title_stripe.grid(column=0, row=0, sticky="w")
+lbl_title_body = ttk.Label(frm_title_body, text="Title", font=font_label, background="white")
+lbl_title_body.grid(column=0, row=0, sticky="w")
+lbl_required = ttk.Label(frm_title_body, text="(required)", font=font_sub_label, background="white", foreground="red")
+lbl_required.grid(column=1, row=0, sticky="w")
+txt_title_body = StringVar()
+ent_title_body = ttk.Entry(frm_title_body, textvariable=txt_title_body, font=font_input, width=30)
+ent_title_body.grid(column=0, columnspan=2, row=1, ipady=5, sticky="w")
+ent_title_body.focus()
 
 # Address entry
-lbl_address = ttk.Label(root, text="Address", font=font_label, foreground="black", background="white")
-lbl_address.grid(column=0, row=2, padx=5, pady=10)
-
-ent_address = ttk.Entry(root, textvariable=txt_address, font=font_input, width=25)
-ent_address.grid(column=1, row=2, padx=5, pady=10, ipady=5)
-ent_address.focus()
+lbl_address_stripe = ttk.Label(frm_address_stripe, text="", font=font_label, background="#FFCC00")
+lbl_address_stripe.grid(column=0, row=0, sticky="w")
+lbl_address_body = ttk.Label(frm_address_body, text="Address", font=font_label, background="white")
+lbl_address_body.grid(column=0, row=0, sticky="w")
+txt_address_body = StringVar()
+ent_address_body = ttk.Entry(frm_address_body, textvariable=txt_address_body, font=font_input, width=30)
+ent_address_body.grid(column=0, row=1, ipady=5, sticky="w")
 
 # Suburb entry
-lbl_suburb = ttk.Label(root, text="Suburb", font=font_label, foreground="black", background="white")
-lbl_suburb.grid(column=0, row=3, padx=5, pady=10, ipady=5)
-
-ent_suburb = ttk.Entry(root, textvariable=txt_suburb, font=font_input, width=25)
-ent_suburb.grid(column=1, row=3, padx=5, pady=10, ipady=5)
-ent_suburb.focus()
+lbl_suburb_stripe = ttk.Label(frm_suburb_stripe, text="", font=font_label, background="#FFCC00")
+lbl_suburb_stripe.grid(column=0, row=0, sticky="w")
+lbl_suburb_body = ttk.Label(frm_suburb_body, text="Suburb", font=font_label, background="white")
+lbl_suburb_body.grid(column=0, row=0, sticky="w")
+txt_suburb_body = StringVar()
+ent_suburb_body = ttk.Entry(frm_suburb_body, textvariable=txt_suburb_body, font=font_input, width=30)
+ent_suburb_body.grid(column=0, row=1, ipady=5, sticky="w")
 
 # City entry
-lbl_city = ttk.Label(root, text="City", font=font_label, foreground="black", background="white")
-lbl_city.grid(column=0, row=4, padx=5, pady=10)
-
-ent_city = ttk.Entry(root, textvariable=txt_city, font=font_input, width=25)
-ent_city.grid(column=1, row=4, padx=5, pady=10, ipady=5)
-ent_city.focus()
+lbl_city_stripe = ttk.Label(frm_city_stripe, text="", font=font_label, background="#FFCC00")
+lbl_city_stripe.grid(column=0, row=0, sticky="w")
+lbl_city_body = ttk.Label(frm_city_body, text="City", font=font_label, background="white")
+lbl_city_body.grid(column=0, row=0, sticky="w")
+txt_city_body = StringVar()
+ent_city_body = ttk.Entry(frm_city_body, textvariable=txt_city_body, font=font_input, width=30)
+ent_city_body.grid(column=0, row=1, ipady=5, sticky="w")
 
 
 # * Save button
-btn_save = ttk.Button(root, text="Save", command=build_sign)
-btn_save.grid(column=0, row=5, columnspan=2, padx=5, pady=10)
+stl_save = ttk.Style()
+stl_save.theme_use("alt")
+stl_save.configure("TButton", background="black", foreground="white", width=200, borderwidth=0, focuscolor="none", font=font_request)
+stl_save.map("TButton", background=[("active", "black")])
+btn_save = ttk.Button(frm_save, text="Save", command=build_sign, padding=15)
+btn_save.grid(column=0, columnspan=2, row=5)
+
+
+# * Warning message
+# txt_warning = StringVar()
+# txtbox_warning = Entry(root, textvariable=txt_warning)
+# lbl_warning = ttk.Label(root, text="", font=font_label, foreground="red", background="white", textvariable=txt_warning)
+# lbl_warning.grid(column=0, row=6, columnspan=2, padx=5, pady=10)
 
 
 if __name__ == "__main__":
     # * Start main loop
     root.mainloop()
+    # build_sign()
