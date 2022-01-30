@@ -3,9 +3,8 @@ import json
 import qrcode
 import qrcode.image.svg
 from PIL import Image, ImageFont, ImageDraw
+import tkinter as tk
 from tkinter import Tk, font, ttk, StringVar, Frame
-
-# TODO: Add warning about title: modal popup or label?
 
 
 # * Static data
@@ -125,6 +124,9 @@ def build_sign():
 # * Create main display
 root = Tk()
 root.configure(background="#F4F4F4")
+
+# Set window icon/logo
+root.iconphoto(False, tk.PhotoImage(file="assets/logo.png"))
 
 window_width = 500
 window_height = 705
