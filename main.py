@@ -5,6 +5,11 @@ import qrcode.image.svg
 from PIL import Image, ImageFont, ImageDraw
 import tkinter as tk
 from tkinter import Tk, font, ttk, StringVar, Frame
+import os, sys
+
+
+# TODO: Add notification for successful save
+# TODO: Add Clear All button
 
 
 # * Static data
@@ -19,6 +24,18 @@ COV_PREFIX = "NZCOVIDTRACER:"
 
 
 # ==================[ FUNCTIONS SECTION ]================== #
+
+
+def app_path(path):
+    frozen = "not"
+    if getattr(sys, "frozen", False):
+        # we are running in executable mode
+        frozen = "ever so"
+        app_dir = sys._MEIPASS
+    else:
+        # we are running in a normal Python environment
+        app_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(app_dir, path)
 
 
 def build_sign():
@@ -85,15 +102,15 @@ def build_sign():
 
     # * Resize img, load bg, calc position, merge
     img = img.resize((450, 450))
-    bg = Image.open("assets/background.png")
+    bg = Image.open(app_path("assets/background.png"))
 
     qr_pos = ((bg.size[0] - img.size[0]) // 2, (bg.size[1] - img.size[1]) // 2 - 126)
 
     bg.paste(img, qr_pos)
 
     # * Add text to image
-    title_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 34)
-    address_font = ImageFont.truetype("assets/Roboto-Regular.ttf", 24)
+    title_font = ImageFont.truetype(app_path("assets/Roboto-Bold.ttf"), 34)
+    address_font = ImageFont.truetype(app_path("assets/Roboto-Regular.ttf"), 24)
 
     title_text = opn.strip()
     address_text = adr.replace("\n", ", ")
@@ -126,7 +143,7 @@ root = Tk()
 root.configure(background="#F4F4F4")
 
 # Set window icon/logo
-root.iconphoto(False, tk.PhotoImage(file="assets/logo.png"))
+root.iconphoto(False, tk.PhotoImage(file=app_path("assets/logo.png")))
 
 window_width = 500
 window_height = 705
