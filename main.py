@@ -8,10 +8,6 @@ from tkinter import Tk, font, ttk, StringVar, Frame
 import os, sys
 
 
-# TODO: Add notification for successful save
-# TODO: Add Clear All button
-
-
 # * Static data
 SAMPLE_DICT = {
     "typ": "entry",
@@ -43,10 +39,10 @@ def build_sign():
     opn = txt_title_body.get()
 
     if not opn:
-        lbl_warning_text.set("YOU MUST ENTER A TITLE")
+        txt_status.set("Status: You must enter a title")
         return
     else:
-        lbl_warning_text.set("")
+        txt_status.set("")
 
     entries = [txt_address_body.get(), txt_suburb_body.get(), txt_city_body.get()]
 
@@ -133,7 +129,19 @@ def build_sign():
     # * Save final image
     title = opn.replace(" ", "_").lower()
 
-    bg.save(f"{title}.png")
+    try:
+        bg.save(f"{title}.png")
+        txt_status.set("Status: Saved successfully")
+    except:
+        txt_status.set("Status: An error occured while saving")
+
+
+def clear_all():
+    txt_title_body.set("")
+    txt_address_body.set("")
+    txt_suburb_body.set("")
+    txt_city_body.set("")
+    txt_status.set("Status: All cleared")
 
 
 # ==================[ TKINTER SECTION ]================== #
@@ -146,7 +154,7 @@ root.configure(background="#F4F4F4")
 root.iconphoto(False, tk.PhotoImage(file=app_path("assets/logo.png")))
 
 window_width = 500
-window_height = 705
+window_height = 755
 
 # Get the screen dimension
 screen_width = root.winfo_screenwidth()
@@ -168,6 +176,7 @@ root.grid_columnconfigure(0, weight=1)
 # * Set up form display
 font_title = font.Font(family="Helvetica", size=20, weight="bold")
 font_request = font.Font(family="Helvetica", size=16, weight="bold")
+font_status = font.Font(family="Helvetica", size=16, weight="normal")
 font_input = font.Font(family="Helvetica", size=18, weight="normal")
 font_label = font.Font(family="Helvetica", size=16, weight="bold")
 font_sub_label = font.Font(family="Helvetica", size=10, weight="normal")
@@ -193,7 +202,10 @@ frm_city_outer = Frame(root, bg="#F4F4F4", padx=15, pady=10)
 frm_city_inner = Frame(frm_city_outer, bg="white")
 frm_city_stripe = Frame(frm_city_inner, bg="#FFCC00", padx=5)
 frm_city_body = Frame(frm_city_inner, bg="white", padx=15, pady=15)
-frm_save = Frame(root, bg="#F4F4F4", padx=15, pady=5)
+frm_status = Frame(root, bg="#F4F4F4", padx=40, pady=10)
+frm_buttons = Frame(root, bg="#F4F4F4", padx=15, pady=5)
+frm_clear = Frame(frm_buttons, bg="#F4F4F4")
+frm_save = Frame(frm_buttons, bg="#F4F4F4")
 
 # Layout
 frm_banner.grid(column=0, sticky="we")
@@ -214,14 +226,17 @@ frm_city_outer.grid(column=0, sticky="we")
 frm_city_inner.grid(column=0, sticky="we")
 frm_city_stripe.grid(column=0, sticky="nesw")
 frm_city_body.grid(column=1, row=0, sticky="nesw")
-frm_save.grid(column=0, sticky="we")
+frm_status.grid(column=0, sticky="w")
+frm_buttons.grid(column=0, sticky="we")
+frm_clear.grid(column=0, row=0, sticky="w")
+frm_save.grid(column=1, row=0, sticky="e")
 
 # Column config
 frm_banner.columnconfigure(0, weight=1)
 frm_request.columnconfigure(0, weight=1)
 frm_title_outer.columnconfigure(0, weight=1)
 frm_title_inner.columnconfigure(1, weight=1)
-frm_title_body.columnconfigure(2, weight=1)
+frm_title_body.columnconfigure(1, weight=1)
 frm_address_outer.columnconfigure(0, weight=1)
 frm_address_inner.columnconfigure(1, weight=1)
 frm_address_body.columnconfigure(1, weight=1)
@@ -231,7 +246,8 @@ frm_suburb_body.columnconfigure(1, weight=1)
 frm_city_outer.columnconfigure(0, weight=1)
 frm_city_inner.columnconfigure(1, weight=1)
 frm_city_body.columnconfigure(1, weight=1)
-frm_save.columnconfigure(0, weight=1)
+frm_status.columnconfigure(0, weight=1)
+frm_buttons.columnconfigure(1, weight=1)
 
 # * Text input
 # Banner
@@ -249,9 +265,6 @@ lbl_title_body = ttk.Label(frm_title_body, text="Title", font=font_label, backgr
 lbl_title_body.grid(column=0, row=0, sticky="w")
 lbl_required = ttk.Label(frm_title_body, text="(required)", font=font_sub_label, background="white", foreground="red")
 lbl_required.grid(column=1, row=0, sticky="w")
-lbl_warning_text = StringVar()
-lbl_warning = ttk.Label(frm_title_body, text="", font=font_sub_label, background="white", foreground="red", textvariable=lbl_warning_text)
-lbl_warning.grid(column=2, row=0)
 txt_title_body = StringVar()
 ent_title_body = ttk.Entry(frm_title_body, textvariable=txt_title_body, font=font_input, width=30)
 ent_title_body.grid(column=0, columnspan=3, row=1, ipady=5, sticky="w")
@@ -285,13 +298,29 @@ ent_city_body = ttk.Entry(frm_city_body, textvariable=txt_city_body, font=font_i
 ent_city_body.grid(column=0, row=1, ipady=5, sticky="w")
 
 
-# * Save button
+# * Status output
+txt_status = StringVar()
+txt_status.set("Status:")
+lbl_status = ttk.Label(frm_status, textvariable=txt_status, font=font_status, foreground="#545454", background="#F4F4F4")
+lbl_status.grid(column=0, row=0, padx=0, pady=0)
+
+
+# * Buttons
+# Clear All
+stl_clear = ttk.Style()
+stl_clear.theme_use("alt")
+stl_clear.configure("clear.TButton", background="#545454", foreground="white", width=10, borderwidth=0, focuscolor="none", font=font_request)
+stl_clear.map("clear.TButton", background=[("active", "#545454")])
+btn_clear = ttk.Button(frm_clear, text="Clear All", command=clear_all, padding=15, style="clear.TButton")
+btn_clear.grid(column=0, row=0)
+
+# Save
 stl_save = ttk.Style()
 stl_save.theme_use("alt")
-stl_save.configure("TButton", background="black", foreground="white", width=200, borderwidth=0, focuscolor="none", font=font_request)
-stl_save.map("TButton", background=[("active", "black")])
-btn_save = ttk.Button(frm_save, text="Save", command=build_sign, padding=15)
-btn_save.grid(column=0, columnspan=2, row=5)
+stl_save.configure("save.TButton", background="black", foreground="white", width=20, borderwidth=0, focuscolor="none", font=font_request)
+stl_save.map("save.TButton", background=[("active", "black")])
+btn_save = ttk.Button(frm_save, text="Save", command=build_sign, padding=15, style="save.TButton")
+btn_save.grid(column=0, row=0)
 
 
 if __name__ == "__main__":
