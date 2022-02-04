@@ -160,7 +160,7 @@ def reset_status():
 
 # * Create main display
 root = Tk()
-root.configure(background="#647687", padx=30, pady=30)
+root.configure(background="#647687")
 
 # Set window icon/logo
 root.iconphoto(False, tk.PhotoImage(file=app_path("assets/logo_icon.png")))
@@ -178,11 +178,8 @@ center_y = int(screen_height / 2 - window_height / 2)
 
 # Set the position of the window to the center of the screen
 root.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
-
 root.resizable(False, False)
 root.title("NZ COVID QR Sign Generator")
-root.grid_rowconfigure(0, weight=1)
-root.grid_columnconfigure(0, weight=1)
 
 
 # * Load fonts
@@ -195,21 +192,33 @@ font_status = font.Font(family="Helvetica", size=11, weight="bold")
 font_info = font.Font(family="Helvetica", size=10, weight="normal")
 
 
+# * Background canvas
+# Create canvas
+cnv_bg = Canvas(root, width=window_width, height=window_height, bg="#647687", highlightthickness=0)
+# cnv_bg.grid(column=0, row=0, padx=0, pady=0, sticky="nw")
+cnv_bg.pack()
+
+# Add background image
+img_app_bg = PhotoImage(file=app_path("assets/app_bg.png"))
+cnv_bg.create_image(0.5, 0.5, anchor="nw", image=img_app_bg)
+
+
 # * Frames
 # Create
-frm_inputs = Frame(root, bg="white", padx=20, pady=20)
+frm_inputs = Frame(bg="white", padx=20, pady=20)
 frm_title = Frame(frm_inputs, bg="white", padx=0, pady=0)
 
 # Layout
-frm_inputs.grid(column=0, row=0, rowspan=2, sticky="nesw")
 frm_title.grid(column=0, row=0, columnspan=3, sticky="ew")
 
 # Column config
-root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=1)
 frm_inputs.columnconfigure(1, weight=1)
 frm_inputs.rowconfigure(12, weight=1)
 frm_title.columnconfigure(1, weight=1)
+
+
+# * Add window to canvas to contain frame
+win_main_frame = cnv_bg.create_window(30, 30, window=frm_inputs, anchor="nw", width=345)
 
 
 # * Text input
@@ -292,29 +301,24 @@ btn_save = ttk.Button(frm_inputs, text="Save", command=build_sign, padding=7, st
 btn_save.grid(column=2, row=12)
 
 
-# * Spacer after frame
-lbl_spacer_body = ttk.Label(root, text="", font=font_spacer, background="#647687", width=20)
-lbl_spacer_body.grid(column=1, row=0, rowspan=2, sticky="nesw")
-
-
 # * Logo
-cnv_logo = Canvas(root, width=262, height=262, bg="#647687", highlightthickness=0)
-cnv_logo.grid(column=2, row=0, padx=16, pady=0, sticky="ne")
-img = PhotoImage(file=app_path("assets/logo.png"))
-cnv_logo.create_image(1, 1, anchor="nw", image=img)
+img_logo = PhotoImage(file=app_path("assets/logo.png"))
+cnv_bg.create_image(550, 155, anchor="center", image=img_logo)
 
 
 # * Info
-lbl_info = ttk.Label(
-    root,
+text_item = cnv_bg.create_text(
+    550,
+    335,
+    anchor="center",
     text="The image that gets created is saved\nto the same folder as this application\n\nCreated by James Rollinson, 2022",
-    foreground="white",
-    background="#647687",
     font=font_info,
+    fill="white",
     justify="center",
-    padding=10,
 )
-lbl_info.grid(column=2, row=1, padx=15, sticky="e")
+bbox = cnv_bg.bbox(text_item)
+rect_item = cnv_bg.create_rectangle(bbox, outline="#647687", fill="#647687", width=25)
+cnv_bg.tag_raise(text_item, rect_item)
 
 
 if __name__ == "__main__":
