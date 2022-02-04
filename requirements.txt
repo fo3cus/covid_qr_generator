@@ -1,4 +1,18 @@
+altgraph==0.17.2
+auto-py-to-exe==2.15.0
+bottle==0.12.19
+bottle-websocket==0.2.9
+Eel==0.12.4
+future==0.18.2
+gevent==21.12.0
+gevent-websocket==0.10.1
+greenlet==1.1.2
 Pillow==9.0.0
+pyinstaller==4.8
+pyinstaller-hooks-contrib==2022.0
 -e git://github.com/ojii/pymaging.git@596a08fce5664e58d6e8c96847393fbe987783f2#egg=pymaging
 -e git://github.com/ojii/pymaging-png.git@83d85c44e4b2342818e6c068065e031a9f81bb9f#egg=pymaging_png
 qrcode==7.3.1
+whichcraft==0.6.1
+zope.event==4.5.0
+zope.interface==5.4.0
