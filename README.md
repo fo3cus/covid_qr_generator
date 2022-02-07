@@ -17,12 +17,8 @@
 
   <p align="center">
     This application will generate a QR code sign based on the design<br /> used in NZ, which allows use of the <a href="https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-resources-and-tools/nz-covid-tracer-app">NZ COVID Tracer</a> app to manually<br /> record our stops at different locations. This facilitates contact tracing<br /> when <a href="https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-health-advice-public/contact-tracing-covid-19/covid-19-contact-tracing-locations-interest">locations of interest</a> become known in your area.
-    <!-- <br />
-    <a href="https://github.com/fo3cus/covid_qr_generator"><strong>Explore the docs »</strong></a> -->
     <br />
     <br />
-    <!-- <a href="https://github.com/fo3cus/covid_qr_generator">View Demo</a>
-    · -->
     <a href="https://github.com/fo3cus/covid_qr_generator/issues">Report Bug</a>
     ·
     <a href="https://github.com/fo3cus/covid_qr_generator/issues">Request Feature</a>
@@ -56,7 +52,7 @@
 
 ## About The Project
 
-[![Application Screenshot][product-screenshot]](https://github.com/fo3cus/covid_qr_generator/blob/main/assets/screenshot.png)
+![Product Name Screen Shot][product-screenshot]
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -153,7 +149,8 @@ python3 main.py
 ```
 
 Fill in the fields of the form and click save to generate a PNG image file in the same directory as the application:
-[![Application Usage Screenshot][usage-screenshot]](https://github.com/fo3cus/covid_qr_generator/blob/main/assets/usage_example.png) [![Sign Sample Image][sample-image]](https://github.com/fo3cus/covid_qr_generator/blob/main/assets/example.png)
+
+> [![Application Usage Screenshot][usage-screenshot]](https://github.com/fo3cus/covid_qr_generator/blob/main/assets/usage_example.png) > [![Sign Sample Image][sample-image]](https://github.com/fo3cus/covid_qr_generator/blob/main/assets/example.png)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -175,7 +172,7 @@ Project Link: [https://github.com/fo3cus/covid_qr_generator](https://github.com/
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-<!-- MARKDOWN LINKS & IMAGES -->
+<!-- MARKDOWN LINKS & assets -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [contributors-shield]: https://img.shields.io/github/contributors/fo3cus/covid_qr_generator.svg?style=for-the-badge
@@ -188,4 +185,6 @@ Project Link: [https://github.com/fo3cus/covid_qr_generator](https://github.com/
 [issues-url]: https://github.com/fo3cus/covid_qr_generator/issues
 [license-shield]: https://img.shields.io/github/license/fo3cus/covid_qr_generator.svg?style=for-the-badge
 [license-url]: https://github.com/fo3cus/covid_qr_generator/blob/main/LICENSE.txt
-[product-screenshot]: https://github.com/fo3cus/fo3cus.github.io/blob/main/images/thumbs/01.png
+[product-screenshot]: assets/screenshot.png
+[usage-screenshot]: assets/usage_example.png
+[sample-image]: assets/example.png
