@@ -164,6 +164,7 @@ Fill in the fields of the form and click save to generate a PNG image file in th
   - [ ] Move prerequisites
   - [ ] Move installation
   - [ ] Move usage
+- [ ] Tutorialise code comments
 
 See the [open issues](https://github.com/fo3cus/covid_qr_generator/issues) for a full list of proposed features (and known issues).
 
