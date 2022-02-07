@@ -43,6 +43,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Road Map</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -154,6 +155,20 @@ Fill in the fields of the form and click save to generate a PNG image file in th
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+<!-- ROADMAP -->
+
+## Roadmap
+
+- [ ] Build and add releases
+- [ ] Create wiki
+  - [ ] Move prerequisites
+  - [ ] Move installation
+  - [ ] Move usage
+
+See the [open issues](https://github.com/fo3cus/covid_qr_generator/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 <!-- LICENSE -->
 
 ## License
@@ -175,15 +190,15 @@ Project Link: [https://github.com/fo3cus/covid_qr_generator](https://github.com/
 <!-- MARKDOWN LINKS & assets -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/fo3cus/covid_qr_generator.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/fo3cus/covid_qr_generator?style=for-the-badge
 [contributors-url]: https://github.com/fo3cus/covid_qr_generator/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/fo3cus/covid_qr_generator.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/fo3cus/covid_qr_generator?style=for-the-badge
 [forks-url]: https://github.com/fo3cus/covid_qr_generator/network/members
-[stars-shield]: https://img.shields.io/github/stars/fo3cus/covid_qr_generator.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/fo3cus/covid_qr_generator?style=for-the-badge
 [stars-url]: https://github.com/fo3cus/covid_qr_generator/stargazers
-[issues-shield]: https://img.shields.io/github/issues/fo3cus/covid_qr_generator.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/fo3cus/covid_qr_generator?style=for-the-badge
 [issues-url]: https://github.com/fo3cus/covid_qr_generator/issues
-[license-shield]: https://img.shields.io/github/license/fo3cus/covid_qr_generator.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/fo3cus/covid_qr_generator?style=for-the-badge
 [license-url]: https://github.com/fo3cus/covid_qr_generator/blob/main/LICENSE.txt
 [product-screenshot]: assets/screenshot.png
 [usage-screenshot]: assets/usage_example.png
